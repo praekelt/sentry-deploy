@@ -1,1 +1,1 @@
-sentry
+-e git+git://github.com/dcramer/sentry.git#egg=sentry
