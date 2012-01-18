@@ -13,9 +13,12 @@ exec { "update_apt":
 # Install required packages.
 package { [
     "git-core",
+    "libpq-dev",
+    "postgresql",
     "python-dev",
     "python-pip",
     "python-virtualenv",
+    "supervisor",
     "nginx",
     ]:
     ensure => latest,
@@ -71,11 +74,12 @@ exec { 'install_packages':
     cwd => '/var/praekelt/sentry',
     subscribe => [
         Exec['create_virtualenv'],
+        Package['libpq-dev'],
         Exec['update_repo'],
     ]
 }
 
-# Create Nginx links.
+# Manage Nginx symlinks.
 file { "/etc/nginx/sites-enabled/sentry.conf":
     ensure => symlink,
     target => "/var/praekelt/sentry/nginx/sentry.conf",
@@ -90,4 +94,27 @@ file { "/etc/nginx/sites-enabled/default":
     subscribe => [
         Package['nginx'],
     ]
+}
+
+# Manage supervisord symlinks.
+file { "/etc/supervisor/conf.d/sentry.conf":
+    ensure => symlink,
+    target => "/var/praekelt/sentry/supervisord/sentry.conf",
+    subscribe => [
+        Exec['update_repo'],
+        Package['supervisor']
+    ]
+}
+
+# Create Postgres role and database.
+postgres::role { "sentry":
+    password => sentry,
+    ensure => present,
+    subscribe => Package["postgresql"],
+}
+
+postgres::database { "sentry":
+    owner => sentry,
+    ensure => present,
+    template => "template0",
 }
