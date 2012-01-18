@@ -34,10 +34,10 @@ Deploy a local Vagrant instance like so::
     vagrant@lucid32$ sudo -i
     root@lucid32$ cd /var/praekelt/sentry
     root@lucid32$ . ve/bin/activate
-    root@lucid32$ sentry manage --config=sentry.conf.py syncdb
-    root@lucid32$ sentry manage --config=sentry.conf.py migrate
-    root@lucid32$ /etc/init.d/nginx restart
-    root@lucid32$ supervisorctl reload
+    (ve)root@lucid32$ sentry manage --config=sentry.conf.py syncdb
+    (ve)root@lucid32$ sentry manage --config=sentry.conf.py migrate
+    (ve)root@lucid32$ /etc/init.d/nginx restart
+    (ve)root@lucid32$ supervisorctl reload
 
 Then access the Sentry dashboard on `localhost port 4567 <http://localhost:4567/1/>`_.
 
