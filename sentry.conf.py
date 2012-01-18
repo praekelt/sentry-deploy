@@ -14,7 +14,7 @@ DATABASES = {
         'NAME': 'sentry',
         'USER': 'sentry',
         'PASSWORD': 'sentry',
-        'HOST': '',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
