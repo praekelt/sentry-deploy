@@ -41,7 +41,7 @@ file { "/var/praekelt/":
 
 # Clone and update repo.
 exec { "clone_repo":
-    command => "git clone https://github.com/praekelt/sentry-deploy.git sentry && git pull origin",
+    command => "git clone https://github.com/praekelt/sentry-deploy.git sentry",
     cwd => "/var/praekelt",
     unless => "test -d /var/praekelt/sentry",
     subscribe => [
@@ -64,6 +64,8 @@ exec { 'create_virtualenv':
     cwd => '/var/praekelt/sentry',
     unless => 'test -d /var/praekelt/sentry/ve',
     subscribe => [
+        Package['libpq-dev'],
+        Package['python-dev'],
         Package['python-virtualenv'],
         Exec['clone_repo'],
     ]
@@ -74,7 +76,6 @@ exec { 'install_packages':
     cwd => '/var/praekelt/sentry',
     subscribe => [
         Exec['create_virtualenv'],
-        Package['libpq-dev'],
         Exec['update_repo'],
     ]
 }
