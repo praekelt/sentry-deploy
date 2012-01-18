@@ -5,6 +5,7 @@ Vagrant::Config.run do |config|
   
   config.vm.provision :puppet do |puppet|
     puppet.manifest_file = "sentry.pp"
+    puppet.module_path = "manifests/modules"
   end
   
   config.vm.forward_port "web", 80, 4567
