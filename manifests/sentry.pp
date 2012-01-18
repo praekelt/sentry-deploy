@@ -13,7 +13,10 @@ exec { "update_apt":
 # Install required packages.
 package { [
     "git-core",
+    "python-dev",
     "python-pip",
+    "python-virtualenv",
+    "nginx",
     ]:
     ensure => latest,
     subscribe => Exec['update_apt'];
@@ -33,12 +36,58 @@ file { "/var/praekelt/":
     subscribe => User["ubuntu"]
 }
 
+# Clone and update repo.
 exec { "clone_repo":
-    command => "git clone https://github.com/praekelt/sentry-deploy.git",
+    command => "git clone https://github.com/praekelt/sentry-deploy.git sentry && git pull origin",
     cwd => "/var/praekelt",
     unless => "test -d /var/praekelt/sentry",
     subscribe => [
         Package['git-core'],
         File['/var/praekelt/'],
+    ]
+}
+
+exec { "update_repo":
+    command => "git pull origin",
+    cwd => "/var/praekelt/sentry",
+    subscribe => [
+        Exec['clone_repo'],
+    ]
+}
+
+# Create virtualenv and install packages.
+exec { 'create_virtualenv':
+    command => 'virtualenv --no-site-packages ve',
+    cwd => '/var/praekelt/sentry',
+    unless => 'test -d /var/praekelt/sentry/ve',
+    subscribe => [
+        Package['python-virtualenv'],
+        Exec['clone_repo'],
+    ]
+}
+
+exec { 'install_packages':
+    command => 'pip -E ./ve/ install -r requirements.pip',
+    cwd => '/var/praekelt/sentry',
+    subscribe => [
+        Exec['create_virtualenv'],
+        Exec['update_repo'],
+    ]
+}
+
+# Create Nginx links.
+file { "/etc/nginx/sites-enabled/sentry.conf":
+    ensure => symlink,
+    target => "/var/praekelt/sentry/nginx/sentry.conf",
+    require => [
+        Exec['update_repo'],
+        Package['nginx'],
+    ]
+}
+
+file { "/etc/nginx/sites-enabled/default":
+    ensure => absent,
+    subscribe => [
+        Package['nginx'],
     ]
 }
