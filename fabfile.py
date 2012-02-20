@@ -12,7 +12,7 @@ def provision():
         sudo('puppet ./manifests/sentry.pp --modulepath ./manifests/modules')
     with cd('/var/praekelt/sentry'):
         with prefix('. ve/bin/activate'):
-            sudo('sentry manage --config=sentry.conf.py syncdb')
-            sudo('sentry manage --config=sentry.conf.py migrate')
+            sudo('sentry --config=sentry.conf.py syncdb')
+            sudo('sentry --config=sentry.conf.py migrate')
     restart()
     run('rm -rf ~/sentry-deploy')
