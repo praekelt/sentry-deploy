@@ -34,8 +34,8 @@ Deploy a local Vagrant instance like so::
     vagrant@lucid32$ sudo -i
     root@lucid32$ cd /var/praekelt/sentry
     root@lucid32$ . ve/bin/activate
-    (ve)root@lucid32$ sentry manage --config=sentry.conf.py syncdb
-    (ve)root@lucid32$ sentry manage --config=sentry.conf.py migrate
+    (ve)root@lucid32$ sentry --config=sentry.conf.py syncdb
+    (ve)root@lucid32$ sentry --config=sentry.conf.py migrate
     (ve)root@lucid32$ /etc/init.d/nginx restart
     (ve)root@lucid32$ supervisorctl reload
 
