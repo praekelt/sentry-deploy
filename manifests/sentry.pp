@@ -72,7 +72,7 @@ exec { 'create_virtualenv':
 }
 
 exec { 'install_packages':
-    command => 'pip -E ./ve/ install -r requirements.pip',
+    command => '. ve/bin/activate && pip install -r requirements.pip && deactivate',
     cwd => '/var/praekelt/sentry',
     subscribe => [
         Exec['create_virtualenv'],
