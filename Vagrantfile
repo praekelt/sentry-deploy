@@ -8,5 +8,5 @@ Vagrant::Config.run do |config|
     puppet.module_path = "manifests/modules"
   end
   
-  config.vm.forward_port "web", 80, 4567
+  config.vm.forward_port 80, 4567
 end
