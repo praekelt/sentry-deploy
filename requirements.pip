@@ -1,3 +1,4 @@
+photon
 psycopg2
 simplejson<2.5.0
 sentry

@@ -22,7 +22,7 @@ DATABASES = {
 SENTRY_KEY = 'my69eAMYjzqtmfaRJ107MeXCYDTaxQdNZPr8YOe/zOV5pIUoZa5biA=='
 
 # Set this to false to require authentication
-SENTRY_PUBLIC = True
+SENTRY_PUBLIC = False
 
 SENTRY_WEB_HOST = '0.0.0.0'
 SENTRY_WEB_PORT = 9000
