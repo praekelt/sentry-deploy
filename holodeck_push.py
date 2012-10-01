@@ -14,12 +14,27 @@ client = Client(
     server="http://holodeck.praekelt.com",
 )
 
-samples = []
-for project in Project.objects.all():
-    samples.append((project.name, Event.objects.filter(project=project).count()))
-
 client.send(
-    samples=samples,
-    api_key='fba3be2b97e14b6fbf32e934d757c705',
+    samples=(('Mom Connect Daily Errors', Event.objects.filter(project__slug='mom-connect').count())),
+    api_key='3bc93b5e0f8d4c30936ad5786b185007',
     timestamp=datetime.now(),
 )
+
+client.send(
+    samples=(('Central Daily Errors', Event.objects.filter(project__slug='praekelt-central').count())),
+    api_key='160d43a54e244ee59d5486cc384cade0',
+    timestamp=datetime.now(),
+)
+
+client.send(
+    samples=(('Ummeli Daily Errors', Event.objects.filter(project__slug='ummeli').count())),
+    api_key='e54bb71a19c34f29aafdf18dcbf12941',
+    timestamp=datetime.now(),
+)
+
+client.send(
+    samples=(('Vumi Go Errors', Event.objects.filter(project__slug='vumi-go').count())),
+    api_key='a9ddd0ff05284e6c9d9d79be913be88b',
+    timestamp=datetime.now(),
+)
+
